@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Space Grotesk", "Avenir Next", sans-serif;
+  color: #151312;
+  background: radial-gradient(circle at 10% 20%, #fff8ea 0%, #faf8f5 45%, #efe8dc 100%);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
