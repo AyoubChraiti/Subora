@@ -37,72 +37,88 @@ function RegisterPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[100dvh] max-w-5xl items-center justify-center px-6 py-10">
-      <section className="surface-card w-full max-w-md p-8">
-        <img src="/favicon-192x192.png" alt="Subora" className="mb-5 h-14 w-14 rounded-2xl border border-ink/10 shadow-sm" />
-        <p className="mb-3 inline-flex rounded-full bg-warm px-3 py-1 text-xs uppercase tracking-[0.2em] text-ink/70">
-          Create Account
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-ink">Start using Subora</h1>
-        <p className="mt-3 text-sm leading-relaxed text-ink/70">Use a strong password to keep your billing data protected.</p>
+    <main className="page-shell flex min-h-[100dvh] items-center fade-up">
+      <section className="panel grid w-full overflow-hidden lg:grid-cols-[1fr_1fr]">
+        <aside className="relative hidden min-h-[560px] bg-gradient-to-br from-slate-950 to-slate-700 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="pointer-events-none absolute -left-10 -bottom-8 h-44 w-44 rounded-full bg-white/12 blur-2xl" />
+          <div>
+            <img src="/favicon-192x192.png" alt="Subora" className="h-14 w-14 rounded-2xl border border-white/30 bg-white/10 p-1" />
+            <p className="mt-5 text-xs uppercase tracking-[0.2em] text-white/70">Get started</p>
+            <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight">Create your account and take control of recurring spend.</h1>
+            <p className="mt-4 text-sm leading-relaxed text-white/80">
+              Join Subora in minutes and track subscriptions with a cleaner, premium experience.
+            </p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-          <label className="block text-sm text-ink/80">
-            Full name
-            <input
-              type="text"
-              value={form.full_name}
-              onChange={(event) => setForm((prev) => ({ ...prev, full_name: event.target.value }))}
-              className="input-field"
-              autoComplete="name"
-              maxLength={255}
-              required
-            />
-          </label>
+          <div className="space-y-3 text-sm text-white/85">
+            <p className="rounded-xl border border-white/20 bg-white/10 px-4 py-3">Fast onboarding and clean dashboard experience.</p>
+            <p className="rounded-xl border border-white/20 bg-white/10 px-4 py-3">Secure sessions with protected profile settings.</p>
+          </div>
+        </aside>
 
-          <label className="block text-sm text-ink/80">
-            Email
-            <input
-              type="email"
-              value={form.email}
-              onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-              className="input-field"
-              autoComplete="email"
-              required
-            />
-          </label>
+        <div className="p-7 sm:p-10">
+          <div className="lg:hidden">
+            <img src="/favicon-192x192.png" alt="Subora" className="mb-4 h-12 w-12 rounded-xl border border-slate-300 shadow-sm" />
+          </div>
 
-          <label className="block text-sm text-ink/80">
-            Password
-            <input
-              type="password"
-              value={form.password}
-              onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-              className="input-field"
-              autoComplete="new-password"
-              minLength={8}
-              maxLength={72}
-              required
-            />
-          </label>
+          <p className="eyebrow">Create account</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Start with Subora today</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">Set up your account and unlock a modern command center for recurring expenses.</p>
 
-          {error ? <p className="status-error">{error}</p> : null}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+            <label className="field-label">
+              Full name
+              <input
+                type="text"
+                value={form.full_name}
+                onChange={(event) => setForm((prev) => ({ ...prev, full_name: event.target.value }))}
+                className="field-input"
+                autoComplete="name"
+                maxLength={255}
+                required
+              />
+            </label>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="primary-btn w-full"
-          >
-            {isSubmitting ? "Creating account..." : "Create account"}
-          </button>
-        </form>
+            <label className="field-label">
+              Email
+              <input
+                type="email"
+                value={form.email}
+                onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                className="field-input"
+                autoComplete="email"
+                required
+              />
+            </label>
 
-        <p className="mt-5 text-sm text-ink/70">
-          Already have an account?{" "}
-          <Link to="/login" className="font-medium text-ink underline underline-offset-4">
-            Sign in
-          </Link>
-        </p>
+            <label className="field-label">
+              Password
+              <input
+                type="password"
+                value={form.password}
+                onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+                className="field-input"
+                autoComplete="new-password"
+                minLength={8}
+                maxLength={72}
+                required
+              />
+            </label>
+
+            {error ? <p className="status-error">{error}</p> : null}
+
+            <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-2.5">
+              {isSubmitting ? "Creating account..." : "Create account"}
+            </button>
+          </form>
+
+          <p className="mt-5 text-sm text-slate-600">
+            Already have an account?{" "}
+            <Link to="/login" className="font-medium text-slate-900 underline underline-offset-4">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </section>
     </main>
   );

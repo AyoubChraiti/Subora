@@ -8,8 +8,11 @@ function ProtectedRoute() {
 
   if (isAuthLoading) {
     return (
-      <main className="mx-auto flex min-h-screen max-w-3xl items-center justify-center px-6">
-        <p className="text-sm text-ink/70">Checking session...</p>
+      <main className="page-shell flex min-h-[100dvh] items-center justify-center">
+        <section className="panel w-full max-w-md p-8 text-center">
+          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
+          <p className="text-sm font-medium text-slate-600">Checking secure session...</p>
+        </section>
       </main>
     );
   }

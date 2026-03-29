@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import SubscriptionList from "../components/SubscriptionList";
@@ -112,62 +113,76 @@ function DashboardPage() {
     <>
       <Navbar userEmail={user?.email} onLogout={logout} />
 
-      <main className="mx-auto h-[calc(100dvh-81px)] w-full max-w-6xl overflow-hidden px-6 py-4 sm:py-5">
-        <section className="surface-card flex h-full flex-col p-5 sm:p-6">
-          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <main className="app-shell fade-up">
+        <section className="panel p-5 sm:p-7">
+          <div className="section-head">
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-ink/50">Overview</p>
-              <h2 className="mt-1 text-2xl font-semibold tracking-tight text-ink">Your subscription hub</h2>
+              <p className="eyebrow">Overview</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">Recurring expense command center</h2>
             </div>
-            <p className="text-sm text-ink/65">Track spend and stay ahead of renewals.</p>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-600">
+              Welcome back, {user?.full_name || user?.email}. Watch upcoming payments, monthly totals, and where to optimize next.
+            </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <article className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.18em] text-ink/50">Total Monthly Spend</p>
-              <p className="mt-2 text-3xl font-semibold text-ink">${totalMonthly}</p>
+          <div className="mt-6 grid gap-4 md:grid-cols-4">
+            <article className="soft-card p-5">
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Monthly spend</p>
+              <p className="kpi-value">${totalMonthly}</p>
             </article>
 
-            <article className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.18em] text-ink/50">Active Subscriptions</p>
-              <p className="mt-2 text-3xl font-semibold text-ink">{items.length}</p>
+            <article className="soft-card p-5">
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Active items</p>
+              <p className="kpi-value">{items.length}</p>
             </article>
 
-            <article className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
-              <p className="text-xs uppercase tracking-[0.18em] text-ink/50">Upcoming Renewals</p>
-              <p className="mt-2 text-3xl font-semibold text-ink">{upcomingRenewals.length}</p>
+            <article className="soft-card p-5">
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Upcoming payments</p>
+              <p className="kpi-value">{upcomingRenewals.length}</p>
+            </article>
+
+            <article className="soft-card p-5">
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Potential yearly spend</p>
+              <p className="kpi-value">${(Number(totalMonthly) * 12).toFixed(0)}</p>
             </article>
           </div>
 
-          <div className="mt-5 grid min-h-0 flex-1 gap-5 lg:grid-cols-3">
-            <section className="flex min-h-0 flex-col rounded-2xl border border-ink/10 bg-white p-5 shadow-sm lg:col-span-2">
-              <h2 className="text-lg font-semibold text-ink">Your Subscriptions</h2>
-              <p className="mt-1 text-sm text-ink/60">Track and remove recurring costs quickly.</p>
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
+            <section className="soft-card p-5 sm:p-6">
+              <div className="section-head">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-950">Your recurring expenses</h2>
+                  <p className="mt-1 text-sm text-slate-600">Track and maintain all payment cadences in one place.</p>
+                </div>
+                <Link to="/expenses/new" className="btn-secondary">
+                  Add new
+                </Link>
+              </div>
 
               {success ? <p className="status-success mt-4">{success}</p> : null}
 
-              <div className="mt-4 min-h-0 flex-1 overflow-auto pr-1">
+              <div className="mt-4">
                 <SubscriptionList items={items} isLoading={isLoading} error={error} onDelete={handleDelete} />
               </div>
             </section>
 
-            <aside className="min-h-0 space-y-5 overflow-auto pr-1">
-              <section className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
-                <h2 className="text-lg font-semibold text-ink">Add Subscription</h2>
+            <aside className="space-y-5">
+              <section className="soft-card p-5 sm:p-6">
+                <h2 className="text-lg font-semibold text-slate-950">Quick add expense</h2>
                 <form onSubmit={handleCreate} className="mt-4 space-y-3">
-                  <label className="block text-sm text-ink/80">
-                    Name
+                  <label className="field-label">
+                    Name or title
                     <input
                       type="text"
                       value={form.name}
                       onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
-                      placeholder="Netflix, Notion, etc."
-                      className="input-field"
+                      placeholder="Rent, WiFi, Gym, Notion"
+                      className="field-input"
                       required
                     />
                   </label>
 
-                  <label className="block text-sm text-ink/80">
+                  <label className="field-label">
                     Price
                     <input
                       type="number"
@@ -176,17 +191,17 @@ function DashboardPage() {
                       placeholder="0.00"
                       step="0.01"
                       min="0.01"
-                      className="input-field"
+                      className="field-input"
                       required
                     />
                   </label>
 
-                  <label className="block text-sm text-ink/80">
+                  <label className="field-label">
                     Billing cycle
                     <select
                       value={form.billing_cycle}
                       onChange={(event) => setForm((prev) => ({ ...prev, billing_cycle: event.target.value }))}
-                      className="input-field"
+                      className="field-input"
                       required
                     >
                       <option value="weekly">Weekly</option>
@@ -195,18 +210,18 @@ function DashboardPage() {
                     </select>
                   </label>
 
-                  <label className="block text-sm text-ink/80">
+                  <label className="field-label">
                     Next renewal date
                     <input
                       type="date"
                       value={form.next_renewal_date}
                       onChange={(event) => setForm((prev) => ({ ...prev, next_renewal_date: event.target.value }))}
-                      className="input-field"
+                      className="field-input"
                       required
                     />
                   </label>
 
-                  <button type="submit" disabled={isSaving} className="primary-btn w-full">
+                  <button type="submit" disabled={isSaving} className="btn-primary w-full py-2.5">
                     {isSaving ? "Saving..." : "Create"}
                   </button>
                 </form>
@@ -214,20 +229,34 @@ function DashboardPage() {
                 {error ? <p className="status-error mt-3">{error}</p> : null}
               </section>
 
-              <section className="rounded-2xl border border-ink/10 bg-white p-5 shadow-sm">
-                <h2 className="text-lg font-semibold text-ink">Upcoming Renewals</h2>
+              <section className="soft-card p-5 sm:p-6">
+                <h2 className="text-lg font-semibold text-slate-950">Upcoming payments</h2>
                 <div className="mt-3 space-y-2">
                   {upcomingRenewals.length ? (
                     upcomingRenewals.map((item) => (
-                      <div key={`renewal-${item.id}`} className="rounded-lg border border-ink/10 px-3 py-2">
-                        <p className="text-sm font-medium text-ink">{item.name}</p>
-                        <p className="text-xs text-ink/60">{item.next_renewal_date}</p>
+                      <div key={`renewal-${item.id}`} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                        <p className="text-sm font-medium text-slate-900">{item.name}</p>
+                        <p className="text-xs text-slate-600">{item.next_renewal_date}</p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-ink/60">No renewals yet.</p>
+                    <p className="text-sm text-slate-600">No renewals yet.</p>
                   )}
                 </div>
+              </section>
+
+              <section className="soft-card p-5 sm:p-6">
+                <h2 className="text-lg font-semibold text-slate-950">Shortcuts</h2>
+                <div className="mt-3 grid gap-2">
+                  <Link to="/calendar" className="btn-secondary w-full justify-center">Open calendar view</Link>
+                  <Link to="/reports" className="btn-secondary w-full justify-center">View reports</Link>
+                  <Link to="/expenses/new" className="btn-secondary w-full justify-center">Create full expense profile</Link>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                  <li className="rounded-lg border border-slate-200 bg-slate-100 px-3 py-2">Email reminders before due dates</li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-100 px-3 py-2">Calendar-based payment planning</li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-100 px-3 py-2">Actionable trend insights</li>
+                </ul>
               </section>
             </aside>
           </div>

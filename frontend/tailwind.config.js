@@ -4,11 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#151312",
-        paper: "#faf8f5",
-        accent: "#0e8a6d",
-        warm: "#f0e3cf"
-      }
+        ink: "#0f172a",
+        paper: "#f8fafc"
+      },
     },
   },
   plugins: [],

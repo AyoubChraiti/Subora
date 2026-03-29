@@ -1,6 +1,6 @@
 function SubscriptionList({ items, isLoading, error, onDelete }) {
   if (isLoading) {
-    return <p className="text-sm text-ink/70">Loading subscriptions...</p>;
+    return <p className="text-sm text-slate-600">Loading expenses...</p>;
   }
 
   if (error) {
@@ -9,9 +9,9 @@ function SubscriptionList({ items, isLoading, error, onDelete }) {
 
   if (!items.length) {
     return (
-      <div className="rounded-2xl border border-dashed border-ink/25 bg-paper/70 p-7 text-center">
-        <p className="text-base font-medium text-ink/80">No subscriptions yet</p>
-        <p className="mt-1 text-sm text-ink/60">Create your first subscription using the form on the right.</p>
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-7 text-center">
+        <p className="text-base font-medium text-slate-800">No recurring expenses yet</p>
+        <p className="mt-1 text-sm text-slate-600">Add your first recurring item to start planning renewals and reminders.</p>
       </div>
     );
   }
@@ -21,24 +21,24 @@ function SubscriptionList({ items, isLoading, error, onDelete }) {
       {items.map((subscription) => (
         <li
           key={subscription.id}
-          className="flex flex-col justify-between gap-4 rounded-2xl border border-ink/10 bg-white/90 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_24px_rgba(15,23,42,0.06)] transition hover:-translate-y-0.5"
         >
           <div>
             <div className="flex items-center justify-between gap-3">
-              <p className="text-base font-semibold text-ink">{subscription.name}</p>
-              <span className="rounded-full bg-warm px-3 py-1 text-xs font-medium capitalize text-ink/80">
+              <p className="text-base font-semibold text-slate-950">{subscription.name}</p>
+              <span className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-medium capitalize text-slate-700">
                 {subscription.billing_cycle}
               </span>
             </div>
 
-            <p className="mt-3 text-2xl font-semibold text-ink">${Number(subscription.price).toFixed(2)}</p>
-            <p className="mt-1 text-sm text-ink/60">Renews on {subscription.next_renewal_date}</p>
+            <p className="mt-3 text-2xl font-semibold text-slate-950">${Number(subscription.price).toFixed(2)}</p>
+            <p className="mt-1 text-sm text-slate-600">Renews on {subscription.next_renewal_date}</p>
           </div>
 
           <button
             type="button"
             onClick={() => onDelete(subscription.id)}
-            className="w-fit rounded-lg border border-red-200 px-3 py-1.5 text-sm text-red-700 transition hover:bg-red-50"
+            className="w-fit rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
           >
             Delete
           </button>

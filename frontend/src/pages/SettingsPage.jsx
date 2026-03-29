@@ -60,59 +60,57 @@ function SettingsPage() {
     <>
       <Navbar userEmail={user?.email} onLogout={logout} />
 
-      <main className="mx-auto min-h-screen w-full max-w-6xl px-6 py-8 sm:py-10">
+      <main className="app-shell min-h-screen fade-up">
         <section className="grid gap-6 lg:grid-cols-3">
-          <article className="surface-card p-6 lg:col-span-1">
+          <article className="panel p-6 lg:col-span-1">
             <div className="flex items-center gap-4">
-              <img src="/favicon-192x192.png" alt="Subora" className="h-16 w-16 rounded-2xl border border-ink/10 shadow-sm" />
+              <img src="/favicon-192x192.png" alt="Subora" className="h-16 w-16 rounded-2xl border border-slate-300" />
               <div>
-                <h2 className="text-2xl font-semibold text-ink">{user?.full_name || "Profile"}</h2>
-                <p className="text-sm text-ink/65">{user?.email}</p>
+                <h2 className="text-2xl font-semibold text-slate-950">{user?.full_name || "Profile"}</h2>
+                <p className="text-sm text-slate-600">{user?.email}</p>
               </div>
             </div>
 
             <dl className="mt-6 space-y-3 text-sm">
               <div>
-                <dt className="text-ink/55">Member since</dt>
-                <dd className="font-medium text-ink">{joinedDate}</dd>
+                <dt className="text-slate-500">Member since</dt>
+                <dd className="font-medium text-slate-900">{joinedDate}</dd>
               </div>
               <div>
-                <dt className="text-ink/55">Plan</dt>
-                <dd className="font-medium text-ink">Starter</dd>
+                <dt className="text-slate-500">Plan</dt>
+                <dd className="font-medium text-slate-900">Starter</dd>
               </div>
               <div>
-                <dt className="text-ink/55">Status</dt>
-                <dd className="font-medium text-accent">Active</dd>
+                <dt className="text-slate-500">Status</dt>
+                <dd className="font-medium text-slate-900">Active</dd>
               </div>
             </dl>
           </article>
 
-          <section className="surface-card p-6 lg:col-span-2">
-            <p className="inline-flex rounded-full bg-warm px-3 py-1 text-xs uppercase tracking-[0.2em] text-ink/70">
-              Settings
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-ink">Profile</h1>
-            <p className="mt-2 text-sm text-ink/65">Update your name or set a new password.</p>
+          <section className="panel p-6 lg:col-span-2">
+            <p className="eyebrow">Settings</p>
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Account profile</h1>
+            <p className="mt-2 text-sm text-slate-600">Manage your profile details and account security.</p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-              <label className="block text-sm text-ink/80">
+              <label className="field-label">
                 Full name
                 <input
                   type="text"
                   value={form.full_name}
                   onChange={(event) => setForm((prev) => ({ ...prev, full_name: event.target.value }))}
-                  className="input-field"
+                  className="field-input"
                   maxLength={255}
                 />
               </label>
 
-              <label className="block text-sm text-ink/80">
+              <label className="field-label">
                 New password
                 <input
                   type="password"
                   value={form.password}
                   onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-                  className="input-field"
+                  className="field-input"
                   minLength={8}
                   maxLength={72}
                   autoComplete="new-password"
@@ -122,7 +120,7 @@ function SettingsPage() {
               {error ? <p className="status-error">{error}</p> : null}
               {success ? <p className="status-success">{success}</p> : null}
 
-              <button type="submit" disabled={isSaving} className="primary-btn">
+              <button type="submit" disabled={isSaving} className="btn-primary py-2.5">
                 {isSaving ? "Saving..." : "Save changes"}
               </button>
             </form>

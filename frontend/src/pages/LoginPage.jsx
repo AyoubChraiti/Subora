@@ -36,59 +36,75 @@ function LoginPage() {
   }
 
   return (
-    <main className="mx-auto flex min-h-[100dvh] max-w-5xl items-center justify-center px-6 py-10">
-      <section className="surface-card w-full max-w-md p-8">
-        <img src="/favicon-192x192.png" alt="Subora" className="mb-5 h-14 w-14 rounded-2xl border border-ink/10 shadow-sm" />
-        <p className="mb-3 inline-flex rounded-full bg-warm px-3 py-1 text-xs uppercase tracking-[0.2em] text-ink/70">
-          Welcome Back
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-ink">Sign in to Subora</h1>
-        <p className="mt-3 text-sm leading-relaxed text-ink/70">Manage all your subscriptions from one secure dashboard.</p>
+    <main className="page-shell flex min-h-[100dvh] items-center fade-up">
+      <section className="panel grid w-full overflow-hidden lg:grid-cols-[1fr_1fr]">
+        <aside className="relative hidden min-h-[560px] bg-gradient-to-br from-slate-950 to-slate-700 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
+          <div>
+            <img src="/favicon-192x192.png" alt="Subora" className="h-14 w-14 rounded-2xl border border-white/30 bg-white/10 p-1" />
+            <p className="mt-5 text-xs uppercase tracking-[0.2em] text-white/70">Welcome back</p>
+            <h1 className="mt-3 text-4xl font-semibold leading-tight tracking-tight">Your control center is waiting.</h1>
+            <p className="mt-4 text-sm leading-relaxed text-white/80">
+              Sign in to review upcoming renewals, monitor spend, and keep recurring costs organized.
+            </p>
+          </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-          <label className="block text-sm text-ink/80">
-            Email
-            <input
-              type="email"
-              value={form.email}
-              onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
-              className="input-field"
-              autoComplete="email"
-              required
-            />
-          </label>
+          <div className="space-y-3 text-sm text-white/85">
+            <p className="rounded-xl border border-white/20 bg-white/10 px-4 py-3">One premium dashboard for all recurring tools.</p>
+            <p className="rounded-xl border border-white/20 bg-white/10 px-4 py-3">Built for clarity, speed, and everyday decisions.</p>
+          </div>
+        </aside>
 
-          <label className="block text-sm text-ink/80">
-            Password
-            <input
-              type="password"
-              value={form.password}
-              onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
-              className="input-field"
-              autoComplete="current-password"
-              minLength={8}
-              maxLength={72}
-              required
-            />
-          </label>
+        <div className="p-7 sm:p-10">
+          <div className="lg:hidden">
+            <img src="/favicon-192x192.png" alt="Subora" className="mb-4 h-12 w-12 rounded-xl border border-slate-300 shadow-sm" />
+          </div>
 
-          {error ? <p className="status-error">{error}</p> : null}
+          <p className="eyebrow">Sign in</p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Welcome to Subora</h2>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">Enter your credentials to continue to your recurring expense workspace.</p>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="primary-btn w-full"
-          >
-            {isSubmitting ? "Signing in..." : "Sign in"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+            <label className="field-label">
+              Email
+              <input
+                type="email"
+                value={form.email}
+                onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
+                className="field-input"
+                autoComplete="email"
+                required
+              />
+            </label>
 
-        <p className="mt-5 text-sm text-ink/70">
-          New here?{" "}
-          <Link to="/register" className="font-medium text-ink underline underline-offset-4">
-            Create an account
-          </Link>
-        </p>
+            <label className="field-label">
+              Password
+              <input
+                type="password"
+                value={form.password}
+                onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))}
+                className="field-input"
+                autoComplete="current-password"
+                minLength={8}
+                maxLength={72}
+                required
+              />
+            </label>
+
+            {error ? <p className="status-error">{error}</p> : null}
+
+            <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-2.5">
+              {isSubmitting ? "Signing in..." : "Sign in"}
+            </button>
+          </form>
+
+          <p className="mt-5 text-sm text-slate-600">
+            New to Subora?{" "}
+            <Link to="/register" className="font-medium text-slate-900 underline underline-offset-4">
+              Create an account
+            </Link>
+          </p>
+        </div>
       </section>
     </main>
   );

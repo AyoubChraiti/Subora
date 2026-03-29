@@ -1,17 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: "Space Grotesk", "Avenir Next", sans-serif;
-  color: #151312;
-  background: radial-gradient(circle at 12% 14%, #fff8ea 0%, #f8f4ec 42%, #efe7db 100%);
+  font-family: "Plus Jakarta Sans", "Avenir Next", sans-serif;
+  color: #0f172a;
+  background:
+    radial-gradient(circle at 8% 4%, #f8fafc 0%, #f1f5f9 35%, #e2e8f0 100%),
+    linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  color: #151312;
+  color: #0f172a;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -27,43 +31,107 @@ body::after {
 }
 
 body::before {
-  width: 300px;
-  height: 300px;
-  top: -80px;
-  right: -90px;
-  background: rgba(210, 138, 87, 0.22);
+  width: 420px;
+  height: 420px;
+  top: -140px;
+  right: -100px;
+  background: rgba(15, 23, 42, 0.08);
 }
 
 body::after {
-  width: 220px;
-  height: 220px;
-  left: -70px;
-  bottom: -70px;
-  background: rgba(14, 138, 109, 0.12);
+  width: 300px;
+  height: 300px;
+  left: -90px;
+  bottom: -100px;
+  background: rgba(148, 163, 184, 0.22);
 }
 
 @layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-7xl px-6 py-8 sm:py-12;
+  }
+
+  .app-shell {
+    @apply mx-auto w-full max-w-7xl px-6 py-6 sm:py-8;
+  }
+
+  .panel {
+    @apply rounded-3xl border border-slate-200 bg-white/90 shadow-[0_10px_50px_rgba(15,23,42,0.08)] backdrop-blur;
+  }
+
   .surface-card {
-    @apply rounded-3xl border border-ink/10 bg-white/80 shadow-lg backdrop-blur-sm;
+    @apply panel;
+  }
+
+  .soft-card {
+    @apply rounded-2xl border border-slate-200 bg-white/95 shadow-[0_6px_28px_rgba(15,23,42,0.06)];
+  }
+
+  .soft-panel {
+    @apply soft-card p-4;
+  }
+
+  .eyebrow {
+    @apply inline-flex rounded-full border border-slate-300 bg-slate-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-600;
+  }
+
+  .section-head {
+    @apply flex flex-wrap items-end justify-between gap-3;
+  }
+
+  .field-label {
+    @apply block text-sm font-medium text-slate-700;
+  }
+
+  .field-input {
+    @apply mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-500 focus:ring-2 focus:ring-slate-300;
   }
 
   .input-field {
-    @apply mt-1 w-full rounded-xl border border-ink/20 bg-white px-3 py-2 text-sm outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-warm;
+    @apply field-input;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-black disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-100;
   }
 
   .primary-btn {
-    @apply rounded-xl bg-ink px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply btn-primary;
   }
 
   .secondary-btn {
-    @apply rounded-xl border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition hover:bg-paper;
+    @apply btn-secondary;
   }
 
   .status-success {
-    @apply rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700;
+    @apply rounded-lg border border-slate-300 bg-slate-100 px-3 py-2 text-sm text-slate-700;
   }
 
   .status-error {
-    @apply rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700;
+    @apply rounded-lg border border-slate-400 bg-white px-3 py-2 text-sm text-slate-800;
+  }
+
+  .kpi-value {
+    @apply mt-2 text-3xl font-semibold tracking-tight text-slate-950;
+  }
+
+  .fade-up {
+    animation: fadeUp 0.5s ease-out;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
