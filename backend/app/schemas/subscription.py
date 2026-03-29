@@ -1,18 +1,22 @@
 from datetime import date, datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class SubscriptionBase(BaseModel):
-    name: str
-    price: Decimal
-    billing_cycle: str
+    name: str = Field(min_length=1, max_length=255)
+    price: Decimal = Field(gt=0)
+    billing_cycle: str = Field(min_length=1, max_length=20)
     next_renewal_date: date
 
 
 class SubscriptionCreate(SubscriptionBase):
-    user_id: int
+    pass
+
+
+class SubscriptionUpdate(SubscriptionBase):
+    pass
 
 
 class SubscriptionRead(SubscriptionBase):

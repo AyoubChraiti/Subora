@@ -5,10 +5,65 @@
 :root {
   font-family: "Space Grotesk", "Avenir Next", sans-serif;
   color: #151312;
-  background: radial-gradient(circle at 10% 20%, #fff8ea 0%, #faf8f5 45%, #efe8dc 100%);
+  background: radial-gradient(circle at 12% 14%, #fff8ea 0%, #f8f4ec 42%, #efe7db 100%);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  color: #151312;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(42px);
+}
+
+body::before {
+  width: 300px;
+  height: 300px;
+  top: -80px;
+  right: -90px;
+  background: rgba(210, 138, 87, 0.22);
+}
+
+body::after {
+  width: 220px;
+  height: 220px;
+  left: -70px;
+  bottom: -70px;
+  background: rgba(14, 138, 109, 0.12);
+}
+
+@layer components {
+  .surface-card {
+    @apply rounded-3xl border border-ink/10 bg-white/80 shadow-lg backdrop-blur-sm;
+  }
+
+  .input-field {
+    @apply mt-1 w-full rounded-xl border border-ink/20 bg-white px-3 py-2 text-sm outline-none transition focus:border-ink/40 focus:ring-2 focus:ring-warm;
+  }
+
+  .primary-btn {
+    @apply rounded-xl bg-ink px-4 py-2 text-sm font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .secondary-btn {
+    @apply rounded-xl border border-ink/20 px-4 py-2 text-sm font-medium text-ink transition hover:bg-paper;
+  }
+
+  .status-success {
+    @apply rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700;
+  }
+
+  .status-error {
+    @apply rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700;
+  }
 }
