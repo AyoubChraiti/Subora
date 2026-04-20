@@ -113,6 +113,34 @@ export async function createSubscription(input) {
   });
 }
 
+export async function createSubscriptionsBulk(items) {
+  return apiRequest("/api/v1/subscriptions/bulk", {
+    method: "POST",
+    auth: true,
+    body: { items },
+  });
+}
+
+export async function fetchUpcomingSubscriptions({ days = 7, limit = 20 } = {}) {
+  const query = new URLSearchParams({
+    days: String(days),
+    limit: String(limit),
+  });
+
+  return apiRequest(`/api/v1/subscriptions/upcoming?${query.toString()}`, {
+    method: "GET",
+    auth: true,
+  });
+}
+
+export async function fetchSubscriptionSummary({ months = 6 } = {}) {
+  const query = new URLSearchParams({ months: String(months) });
+  return apiRequest(`/api/v1/subscriptions/summary?${query.toString()}`, {
+    method: "GET",
+    auth: true,
+  });
+}
+
 export async function deleteSubscription(subscriptionId) {
   return apiRequest(`/api/v1/subscriptions/${subscriptionId}`, {
     method: "DELETE",

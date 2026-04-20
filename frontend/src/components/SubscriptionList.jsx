@@ -1,6 +1,6 @@
 function SubscriptionList({ items, isLoading, error, onDelete }) {
   if (isLoading) {
-    return <p className="text-sm text-slate-600">Loading expenses...</p>;
+    return <p className="text-sm text-slate-600">Loading subscriptions...</p>;
   }
 
   if (error) {
@@ -10,8 +10,8 @@ function SubscriptionList({ items, isLoading, error, onDelete }) {
   if (!items.length) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-7 text-center">
-        <p className="text-base font-medium text-slate-800">No recurring expenses yet</p>
-        <p className="mt-1 text-sm text-slate-600">Add your first recurring item to start planning renewals and reminders.</p>
+        <p className="text-base font-medium text-slate-800">No subscriptions yet</p>
+        <p className="mt-1 text-sm text-slate-600">Add your first subscription to start tracking renewals and monthly cost.</p>
       </div>
     );
   }

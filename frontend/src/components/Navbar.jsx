@@ -11,24 +11,21 @@ function navClass({ isActive }) {
 function Navbar({ userEmail, onLogout }) {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-3">
+      <div className="relative mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-3">
         <div className="flex items-center gap-3">
           <img src="/favicon-192x192.png" alt="Subora" className="h-9 w-9 rounded-lg border border-slate-300" />
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Subora</p>
-            <h1 className="text-base font-semibold tracking-tight text-slate-900 sm:text-lg">Recurring Expense Console</h1>
+            <h1 className="text-base font-semibold tracking-tight text-slate-900 sm:text-lg">Subscription Console</h1>
           </div>
         </div>
 
-        <div className="order-3 flex w-full flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 sm:order-2 sm:w-auto">
+        <div className="order-3 flex w-full flex-wrap items-center justify-center gap-1 rounded-xl border border-slate-200 bg-white p-1 sm:order-2 sm:absolute sm:left-1/2 sm:w-auto sm:-translate-x-1/2">
           <NavLink to="/dashboard" className={navClass} end>
             Dashboard
           </NavLink>
           <NavLink to="/calendar" className={navClass}>
             Calendar
-          </NavLink>
-          <NavLink to="/expenses/new" className={navClass}>
-            Add Expense
           </NavLink>
           <NavLink to="/reports" className={navClass}>
             Reports

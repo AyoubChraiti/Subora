@@ -1,91 +1,83 @@
 # Subora
 
-Subora is a full-stack SaaS starter monorepo for tracking subscriptions, built with FastAPI, React, PostgreSQL, and Docker Compose.
+Subora is a full-stack SaaS starter monorepo for tracking subscriptions, built with FastAPI, React, and PostgreSQL.
 
 ## Stack
 
 - Backend: FastAPI (Python) + SQLAlchemy + Pydantic
 - Frontend: React (Vite) + TailwindCSS
 - Database: PostgreSQL
-- Infrastructure: Docker + Docker Compose
 
 ## Project Structure
 
 subora/
 ├── backend/
 ├── frontend/
-├── docker-compose.yml
 └── README.md
 
-## Backend Structure
+## Prerequisites
 
-backend/
-├── app/
-│   ├── main.py
-│   ├── api/
-│   ├── models/
-│   ├── schemas/
-│   ├── services/
-│   └── db/
-
-Highlights:
-
-- Health endpoint: GET /health
-- Versioned API base: /api/v1
-- PostgreSQL via DATABASE_URL environment variable
-- JWT-ready auth service placeholder in app/services/auth.py
-- Initial schema includes users and subscriptions tables
-
-## Frontend Structure
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   └── App.jsx
-
-Highlights:
-
-- Dashboard page titled Subora
-- Placeholder subscriptions list UI
-- API service wired to backend via VITE_API_BASE_URL
+- Python 3.11+
+- Node.js 18+
+- npm 9+
+- PostgreSQL 14+
 
 ## Environment Variables
 
-1. Copy .env.example to .env
+From the project root:
+
+1. Copy `.env.example` to `.env`
 2. Update values as needed
 
-Core variables:
+Important defaults:
 
-- POSTGRES_DB
-- POSTGRES_USER
-- POSTGRES_PASSWORD
-- POSTGRES_PORT
-- DATABASE_URL
-- BACKEND_PORT
-- FRONTEND_PORT
-- VITE_API_BASE_URL
+- `DATABASE_URL=postgresql+psycopg2://subora:subora_password@localhost:5432/subora`
+- `BACKEND_PORT=8000`
+- `FRONTEND_PORT=3000`
+- `VITE_API_BASE_URL=http://localhost:8000`
 
-## Run with Docker Compose
+## Local Database Setup
 
-From project root:
+Create a local PostgreSQL role and database that match `.env` values:
 
-1. cp .env.example .env
-2. docker compose up --build
+```sql
+CREATE ROLE subora WITH LOGIN PASSWORD 'subora_password';
+ALTER ROLE subora CREATEDB;
+CREATE DATABASE subora OWNER subora;
+```
 
-Services:
+If you already have a database/user, just update `DATABASE_URL` in `.env`.
 
-- Frontend: http://localhost:3000
-- Backend: http://localhost:8000
-- Backend Health: http://localhost:8000/health
-- PostgreSQL: localhost:5432
+## Run Backend Locally
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Backend URL: http://localhost:8000
+
+Health check: http://localhost:8000/health
+
+## Run Frontend Locally
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend URL: http://localhost:3000
 
 ## Notes
 
-- Backend waits for PostgreSQL health before startup.
 - Tables are created automatically on backend startup.
-- Current subscriptions endpoint returns a placeholder empty list for UI wiring.
+- The subscriptions endpoint currently returns a placeholder empty list for UI wiring.
 
 ## Next Steps
 

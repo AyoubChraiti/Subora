@@ -1,3 +1,8 @@
+import calendar
+from collections import defaultdict
+from datetime import date, timedelta
+from decimal import Decimal
+
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -5,7 +10,17 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.subscription import Subscription
 from app.models.user import User
-from app.schemas.subscription import SubscriptionCreate, SubscriptionRead, SubscriptionUpdate
+from app.schemas.subscription import (
+    CategoryBreakdownPoint,
+    SubscriptionBulkCreate,
+    SubscriptionBulkRead,
+    MonthlySeriesPoint,
+    SubscriptionCreate,
+    SubscriptionPatch,
+    SubscriptionRead,
+    SubscriptionSummaryRead,
+    SubscriptionUpdate,
+)
 from app.schemas.user import LoginRequest, TokenRead, UserCreate, UserRead, UserUpdate
 from app.config import settings
 from app.services.auth import AuthService, get_current_user
@@ -15,6 +30,17 @@ from app.services.rate_limit import limiter
 router = APIRouter()
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 api_router = APIRouter(prefix="/api/v1", tags=["subscriptions"])
+
+
+def monthly_estimate(price: Decimal, billing_cycle: str) -> Decimal:
+    cycle = (billing_cycle or "monthly").strip().lower()
+    if cycle == "yearly":
+        return price / Decimal("12")
+    if cycle == "quarterly":
+        return price / Decimal("3")
+    if cycle == "weekly":
+        return (price * Decimal("52")) / Decimal("12")
+    return price
 
 
 @router.get("/health", tags=["health"])
@@ -105,9 +131,9 @@ def create_subscription(
 ) -> SubscriptionRead:
     subscription = Subscription(
         user_id=current_user.id,
-        name=subscription_in.name.strip(),
+        name=subscription_in.name,
         price=subscription_in.price,
-        billing_cycle=subscription_in.billing_cycle.strip().lower(),
+        billing_cycle=subscription_in.billing_cycle,
         next_renewal_date=subscription_in.next_renewal_date,
     )
     db.add(subscription)
@@ -116,7 +142,36 @@ def create_subscription(
     return subscription
 
 
-@api_router.get("/subscriptions/{subscription_id}", response_model=SubscriptionRead)
+@api_router.post("/subscriptions/bulk", response_model=SubscriptionBulkRead, status_code=status.HTTP_201_CREATED)
+@limiter.limit(settings.default_rate_limit)
+def create_subscriptions_bulk(
+    request: Request,
+    payload: SubscriptionBulkCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> SubscriptionBulkRead:
+    created_items: list[Subscription] = []
+
+    for item in payload.items:
+        subscription = Subscription(
+            user_id=current_user.id,
+            name=item.name,
+            price=item.price,
+            billing_cycle=item.billing_cycle,
+            next_renewal_date=item.next_renewal_date,
+        )
+        db.add(subscription)
+        created_items.append(subscription)
+
+    db.commit()
+
+    for subscription in created_items:
+        db.refresh(subscription)
+
+    return SubscriptionBulkRead(items=created_items)
+
+
+@api_router.get("/subscriptions/{subscription_id:int}", response_model=SubscriptionRead)
 @limiter.limit(settings.default_rate_limit)
 def get_subscription(
     request: Request,
@@ -134,7 +189,7 @@ def get_subscription(
     return subscription
 
 
-@api_router.put("/subscriptions/{subscription_id}", response_model=SubscriptionRead)
+@api_router.put("/subscriptions/{subscription_id:int}", response_model=SubscriptionRead)
 @limiter.limit(settings.default_rate_limit)
 def update_subscription(
     request: Request,
@@ -151,16 +206,128 @@ def update_subscription(
     if not subscription:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subscription not found")
 
-    subscription.name = subscription_in.name.strip()
+    subscription.name = subscription_in.name
     subscription.price = subscription_in.price
-    subscription.billing_cycle = subscription_in.billing_cycle.strip().lower()
+    subscription.billing_cycle = subscription_in.billing_cycle
     subscription.next_renewal_date = subscription_in.next_renewal_date
     db.commit()
     db.refresh(subscription)
     return subscription
 
 
-@api_router.delete("/subscriptions/{subscription_id}", status_code=status.HTTP_204_NO_CONTENT)
+@api_router.patch("/subscriptions/{subscription_id:int}", response_model=SubscriptionRead)
+@limiter.limit(settings.default_rate_limit)
+def patch_subscription(
+    request: Request,
+    subscription_id: int,
+    subscription_in: SubscriptionPatch,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> SubscriptionRead:
+    subscription = (
+        db.query(Subscription)
+        .filter(Subscription.id == subscription_id, Subscription.user_id == current_user.id)
+        .first()
+    )
+    if not subscription:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Subscription not found")
+
+    payload = subscription_in.model_dump(exclude_unset=True)
+    if not payload:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No fields provided")
+
+    for field, value in payload.items():
+        setattr(subscription, field, value)
+
+    db.commit()
+    db.refresh(subscription)
+    return subscription
+
+
+@api_router.get("/subscriptions/upcoming", response_model=dict[str, list[SubscriptionRead]])
+@limiter.limit(settings.default_rate_limit)
+def list_upcoming_subscriptions(
+    request: Request,
+    days: int = 7,
+    limit: int = 20,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> dict[str, list[SubscriptionRead]]:
+    if days < 1 or days > 365:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="days must be between 1 and 365")
+    if limit < 1 or limit > 200:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="limit must be between 1 and 200")
+
+    start = date.today()
+    end = start + timedelta(days=days)
+
+    items = (
+        db.query(Subscription)
+        .filter(
+            Subscription.user_id == current_user.id,
+            Subscription.next_renewal_date >= start,
+            Subscription.next_renewal_date <= end,
+        )
+        .order_by(Subscription.next_renewal_date.asc())
+        .limit(limit)
+        .all()
+    )
+    return {"items": items}
+
+
+@api_router.get("/subscriptions/summary", response_model=SubscriptionSummaryRead)
+@limiter.limit(settings.default_rate_limit)
+def get_subscription_summary(
+    request: Request,
+    months: int = 6,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> SubscriptionSummaryRead:
+    if months < 1 or months > 24:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="months must be between 1 and 24")
+
+    items = db.query(Subscription).filter(Subscription.user_id == current_user.id).all()
+
+    monthly_total = sum((monthly_estimate(Decimal(item.price), item.billing_cycle) for item in items), Decimal("0"))
+    projected_annual = monthly_total * Decimal("12")
+
+    today = date.today()
+    in_30_days = today + timedelta(days=30)
+    upcoming_count_30d = sum(1 for item in items if today <= item.next_renewal_date <= in_30_days)
+
+    series = [
+        MonthlySeriesPoint(month=calendar.month_abbr[((today.month - 1 + i) % 12) + 1], value=monthly_total.quantize(Decimal("0.01")))
+        for i in range(months)
+    ]
+
+    grouped: dict[str, Decimal] = defaultdict(lambda: Decimal("0"))
+    for item in items:
+        key = (item.billing_cycle or "monthly").strip().lower().title()
+        grouped[key] += monthly_estimate(Decimal(item.price), item.billing_cycle)
+
+    total_for_percent = sum(grouped.values(), Decimal("0"))
+    breakdown: list[CategoryBreakdownPoint] = []
+    for category, amount in sorted(grouped.items(), key=lambda pair: pair[1], reverse=True):
+        percentage = int((amount / total_for_percent) * 100) if total_for_percent > 0 else 0
+        breakdown.append(
+            CategoryBreakdownPoint(
+                name=category,
+                value=percentage,
+                amount=amount.quantize(Decimal("0.01")),
+            )
+        )
+
+    return SubscriptionSummaryRead(
+        total_monthly_estimate=monthly_total.quantize(Decimal("0.01")),
+        projected_annual=projected_annual.quantize(Decimal("0.01")),
+        active_items=len(items),
+        upcoming_count_30d=upcoming_count_30d,
+        monthly_series=series,
+        category_breakdown=breakdown,
+    )
+
+
+@api_router.delete("/subscriptions/{subscription_id:int}", status_code=status.HTTP_204_NO_CONTENT)
 @limiter.limit(settings.default_rate_limit)
 def delete_subscription(
     request: Request,

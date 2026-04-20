@@ -60,9 +60,9 @@ function SettingsPage() {
     <>
       <Navbar userEmail={user?.email} onLogout={logout} />
 
-      <main className="app-shell min-h-screen fade-up">
-        <section className="grid gap-6 lg:grid-cols-3">
-          <article className="panel p-6 lg:col-span-1">
+      <main className="app-shell-fixed fade-up">
+        <section className="grid h-full gap-6 lg:grid-cols-3">
+          <article className="panel section-scroll p-6 lg:col-span-1">
             <div className="flex items-center gap-4">
               <img src="/favicon-192x192.png" alt="Subora" className="h-16 w-16 rounded-2xl border border-slate-300" />
               <div>
@@ -78,7 +78,7 @@ function SettingsPage() {
               </div>
               <div>
                 <dt className="text-slate-500">Plan</dt>
-                <dd className="font-medium text-slate-900">Starter</dd>
+                <dd className="font-medium text-slate-900">Free</dd>
               </div>
               <div>
                 <dt className="text-slate-500">Status</dt>
@@ -87,7 +87,7 @@ function SettingsPage() {
             </dl>
           </article>
 
-          <section className="panel p-6 lg:col-span-2">
+          <section className="panel section-scroll p-6 lg:col-span-2">
             <p className="eyebrow">Settings</p>
             <h1 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Account profile</h1>
             <p className="mt-2 text-sm text-slate-600">Manage your profile details and account security.</p>

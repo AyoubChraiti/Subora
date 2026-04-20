@@ -63,7 +63,7 @@ function RegisterPage() {
 
           <p className="eyebrow">Create account</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Start with Subora today</h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-600">Set up your account and unlock a modern command center for recurring expenses.</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">Set up your account and unlock a modern command center for subscriptions.</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <label className="field-label">

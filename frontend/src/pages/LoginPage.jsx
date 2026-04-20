@@ -62,7 +62,7 @@ function LoginPage() {
 
           <p className="eyebrow">Sign in</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Welcome to Subora</h2>
-          <p className="mt-2 text-sm leading-relaxed text-slate-600">Enter your credentials to continue to your recurring expense workspace.</p>
+          <p className="mt-2 text-sm leading-relaxed text-slate-600">Enter your credentials to continue to your subscription workspace.</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <label className="field-label">

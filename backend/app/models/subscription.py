@@ -16,5 +16,6 @@ class Subscription(Base):
     billing_cycle: Mapped[str] = mapped_column(String(20), nullable=False)
     next_renewal_date: Mapped[date] = mapped_column(Date, nullable=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     user = relationship("User", back_populates="subscriptions")

@@ -13,7 +13,7 @@ function LandingPage() {
           <img src="/favicon-192x192.png" alt="Subora" className="h-11 w-11 rounded-xl border border-slate-300" />
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Subora</p>
-            <p className="text-sm font-medium text-slate-700">Recurring expense intelligence</p>
+            <p className="text-sm font-medium text-slate-700">Subscription intelligence</p>
           </div>
         </div>
 
@@ -43,7 +43,7 @@ function LandingPage() {
           <article>
             <p className="eyebrow">Stop losing money to forgotten recurring charges</p>
             <h1 className="mt-5 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-6xl">
-              Save money and regain control over every recurring expense.
+              Save money and regain control over every subscription.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
               Track subscriptions, rent, WiFi bills, car payments, loans, memberships, and more in one clean workspace designed for fast decisions.
@@ -94,7 +94,7 @@ function LandingPage() {
 
         <article className="soft-card p-6 sm:p-7">
           <p className="eyebrow">The solution</p>
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-slate-950">One source of truth for all recurring expenses.</h2>
+          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-slate-950">One source of truth for all subscriptions.</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
             Subora combines reminders, calendar visibility, and clean reports to help you act before charges hit, optimize costs, and stay financially calm.
           </p>
@@ -112,14 +112,14 @@ function LandingPage() {
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {[
             "Email reminders before payment dates",
-            "Customizable alert timing per expense",
+            "Customizable alert timing per subscription",
             "Dashboard overview with key totals",
             "Calendar view for scheduled payments",
             "Reports for trends and category insights",
             "Tags and folders for organization",
             "CSV import and export",
             "Future bank and accounting integrations",
-            "Fast add/edit recurring expense forms",
+            "Fast add/edit subscription forms",
           ].map((feature) => (
             <div key={feature} className="rounded-xl border border-slate-200 bg-white p-4">
               <p className="text-sm font-medium text-slate-800">{feature}</p>
@@ -163,7 +163,7 @@ function LandingPage() {
       </section>
 
       <section className="mt-7 grid gap-5 lg:grid-cols-3">
-        {["Add your recurring expenses", "Set reminders and alert rules", "Review dashboard and optimize spend"].map((step, index) => (
+        {["Add your subscriptions", "Set reminders and alert rules", "Review dashboard and optimize spend"].map((step, index) => (
           <article key={step} className="soft-card p-6">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Step {index + 1}</p>
             <h3 className="mt-3 text-lg font-semibold text-slate-950">{step}</h3>
@@ -182,7 +182,7 @@ function LandingPage() {
             <p className="mt-3 text-4xl font-semibold text-slate-950">$0</p>
             <p className="mt-1 text-sm text-slate-600">For personal tracking basics</p>
             <ul className="mt-4 space-y-2 text-sm text-slate-700">
-              <li>Up to 20 recurring expenses</li>
+              <li>Up to 20 subscriptions</li>
               <li>Calendar view</li>
               <li>Basic reminders</li>
             </ul>
@@ -193,7 +193,7 @@ function LandingPage() {
             <p className="mt-3 text-4xl font-semibold">$9</p>
             <p className="mt-1 text-sm text-white/75">Per month, per workspace</p>
             <ul className="mt-4 space-y-2 text-sm text-white/85">
-              <li>Unlimited recurring expenses</li>
+              <li>Unlimited subscriptions</li>
               <li>Advanced reminder rules</li>
               <li>Reports, CSV import/export, future integrations</li>
             </ul>
@@ -205,7 +205,7 @@ function LandingPage() {
         <p className="eyebrow">Start now</p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Build financial clarity before the next billing cycle.</h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-600">
-          Join users who replaced scattered reminders with one premium recurring expense workspace.
+          Join users who replaced scattered reminders with one premium subscription workspace.
         </p>
         <Link to={primaryCta} className="btn-primary mt-6 px-6 py-3">
           {isAuthenticated ? "Go to dashboard" : "Create free account"}
@@ -215,7 +215,7 @@ function LandingPage() {
       <footer className="mt-7 mb-2 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm text-slate-500">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p>Subora</p>
-          <p>Recurring expense tracking for modern teams and individuals.</p>
+          <p>Subscription tracking for modern teams and individuals.</p>
         </div>
       </footer>
     </main>

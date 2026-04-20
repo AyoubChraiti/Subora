@@ -55,6 +55,19 @@ body::after {
     @apply mx-auto w-full max-w-7xl px-6 py-6 sm:py-8;
   }
 
+  .app-shell-fixed {
+    @apply mx-auto w-full max-w-7xl overflow-hidden px-6 py-4;
+    height: calc(100dvh - 120px);
+  }
+
+  .app-panel-fit {
+    @apply h-full overflow-hidden;
+  }
+
+  .section-scroll {
+    @apply min-h-0 overflow-auto;
+  }
+
   .panel {
     @apply rounded-3xl border border-slate-200 bg-white/90 shadow-[0_10px_50px_rgba(15,23,42,0.08)] backdrop-blur;
   }
@@ -121,6 +134,12 @@ body::after {
 
   .fade-up {
     animation: fadeUp 0.5s ease-out;
+  }
+}
+
+@media (min-width: 640px) {
+  .app-shell-fixed {
+    height: calc(100dvh - 76px);
   }
 }
 
