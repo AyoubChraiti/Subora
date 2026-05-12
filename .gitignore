@@ -26,3 +26,5 @@ frontend/dist/
 
 # Docker
 *.log
+.vercel
+.env*.local
